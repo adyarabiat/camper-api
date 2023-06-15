@@ -4,6 +4,7 @@ const PORT = process.env.PORT || 5001;
 const morgan = require('morgan'); //to create custom middlewares
 const connectDB = require('./config/db'); //to create custom middlewares
 const colors = require('colors');
+const errorHandler = require('./middleware/error');
 
 // Load env
 dotenv.config({
@@ -28,6 +29,9 @@ if (process.env.NODE_ENV === 'development') {
 
 // Mount routers
 app.use('/api/v1/bootcamps', bootcamps);
+
+// use the middleware: error
+app.use(errorHandler);
 
 const server = app.listen(PORT, () => {
     console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold);
