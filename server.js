@@ -1,10 +1,13 @@
+const path = require('path');
 const express = require('express');
 const dotenv = require('dotenv');
 const PORT = process.env.PORT || 5001;
 const morgan = require('morgan'); //to create custom middlewares
-const connectDB = require('./config/db'); //to create custom middlewares
 const colors = require('colors');
+const fileupload = require('express-fileupload');
+
 const errorHandler = require('./middleware/error');
+const connectDB = require('./config/db'); //to create custom middlewares
 
 // Load env
 dotenv.config({
@@ -27,6 +30,12 @@ app.use(express.json());
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
+
+// File uploading
+app.use(fileupload());
+
+// Set static folder
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Mount routers
 app.use('/api/v1/bootcamps', bootcamps);
